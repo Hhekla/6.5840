@@ -232,26 +232,26 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 		DPrintf("[RequestVote] Raft:%v has vote for:%v\n", rf.me, votedFor)
 		return
 	}
-	lastIdx, lastTerm := rf.getLastLogIndexAndTerm()
-	if lastTerm > args.LastLogTerm {
-		DPrintf("[RequestVote] Raft:%v LastLogTerm:%v bigger than Raft:%v:%v\n",
-			rf.me, lastTerm, args.CandidateID, args.LastLogTerm)
-		return
-	}
-	if lastTerm < args.LastLogTerm {
-		DPrintf("[RequestVote] Raft:%v LastLogTerm:%v lower than Raft:%v:%v\n",
-			rf.me, lastTerm, args.CandidateID, args.LastLogTerm)
-		reply.VoteGranted = true
-		return
-	}
-	if lastIdx > args.LastLogIndex {
-		DPrintf("[RequestVote] Raft:%v LastLogIndex:%v bigger than Raft:%v:%v\n",
-			rf.me, lastIdx, args.CandidateID, args.LastLogIndex)
-		return
-	}
-	DPrintf("[RequestVote] Raft:%v LastLogIndex:%v and term:%v lower than Raft:%v:%v term:%v, voted for Raft:%v\n",
-		rf.me, lastIdx, lastTerm, args.CandidateID, args.LastLogIndex,
-		args.LastLogTerm, args.CandidateID)
+	// lastIdx, lastTerm := rf.getLastLogIndexAndTerm()
+	// if lastTerm > args.LastLogTerm {
+	// 	DPrintf("[RequestVote] Raft:%v LastLogTerm:%v bigger than Raft:%v:%v\n",
+	// 		rf.me, lastTerm, args.CandidateID, args.LastLogTerm)
+	// 	return
+	// }
+	// if lastTerm < args.LastLogTerm {
+	// 	DPrintf("[RequestVote] Raft:%v LastLogTerm:%v lower than Raft:%v:%v\n",
+	// 		rf.me, lastTerm, args.CandidateID, args.LastLogTerm)
+	// 	reply.VoteGranted = true
+	// 	return
+	// }
+	// if lastIdx > args.LastLogIndex {
+	// 	DPrintf("[RequestVote] Raft:%v LastLogIndex:%v bigger than Raft:%v:%v\n",
+	// 		rf.me, lastIdx, args.CandidateID, args.LastLogIndex)
+	// 	return
+	// }
+	// DPrintf("[RequestVote] Raft:%v LastLogIndex:%v and term:%v lower than Raft:%v:%v term:%v, voted for Raft:%v\n",
+	// 	rf.me, lastIdx, lastTerm, args.CandidateID, args.LastLogIndex,
+	// 	args.LastLogTerm, args.CandidateID)
 	reply.VoteGranted = true
 
 	rf.setTerm(args.Term)
@@ -287,11 +287,11 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 			rf.me, args.Term, args.LeaderID)
 		return
 	}
-	if !rf.matchLog(args.PrevLogIndex, args.PrevLogTerm) {
-		DPrintf("[AppendEntries] Raft:%v's log don't match with:%v\n",
-			rf.me, args.LeaderID)
-		return
-	}
+	// if !rf.matchLog(args.PrevLogIndex, args.PrevLogTerm) {
+	// 	DPrintf("[AppendEntries] Raft:%v's log don't match with:%v\n",
+	// 		rf.me, args.LeaderID)
+	// 	return
+	// }
 	if len(args.Entries) == 0 {
 		// 表明是心跳消息
 		rf.turnFollower()
